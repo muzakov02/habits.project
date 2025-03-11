@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:habits_project/widgets/your_habits.dart';
 import 'package:intl/intl.dart';
 
+
 class EditHabit extends StatefulWidget {
-  EditHabit({super.key, required List<Map<String, dynamic>> habits});
+  const EditHabit({super.key, required this.habits});
+
+  final List<Map<String, dynamic>> habits;
 
   @override
   State<EditHabit> createState() => _EditHabitState();
@@ -11,7 +15,7 @@ class EditHabit extends StatefulWidget {
 class _EditHabitState extends State<EditHabit> {
   final List<DateTime> next7Days = List.generate(
     7,
-    (index) => DateTime.now().add(Duration(days: index)),
+        (index) => DateTime.now().add(Duration(days: index)),
   );
   List<Map<String, dynamic>> habits = [];
   final TextEditingController habitController = TextEditingController();
@@ -31,67 +35,34 @@ class _EditHabitState extends State<EditHabit> {
         padding: const EdgeInsets.all(18),
         child: Column(
           children: [
-            SizedBox(
-              height: 66,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: next7Days.length,
-                reverse: false,
-                itemBuilder: (context, index) {
-                  DateTime date = next7Days[index];
+          SizedBox(
+          height: 66,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: next7Days.length,
+            reverse: false,
+            itemBuilder: (context, index) {
+              DateTime date = next7Days[index];
 
-                  bool isToday = DateFormat('yyyy-MM-dd').format(date) ==
-                      DateFormat('yyyy-MM-dd').format(DateTime.now());
+              bool isToday = DateFormat('yyyy-MM-dd').format(date) ==
+                  DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-                  return _buildDateItem(date, isToday);
-                },
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Container(
-                child: Column(
-                  children: [
-                    Text(
-                      "Today Habit",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 21),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: habits.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: Text(habits[index]['name'] ?? ""),
-                          trailing: SizedBox(
-                            width: 100,
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Color(0xFF37C871),
-                                  value: isCheckingMe,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      isCheckingMe = value!;
-                                    });
-                                  },
-                                ),
-                                IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.more_vert))
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            )
+              return _buildDateItem(date, isToday);
+            },
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: ListView.builder(
+              padding: EdgeInsets.all(16.0),
+              itemCount: widget.habits.length,
+              itemBuilder: (context, index) {
+                return YourHabits(habits: widget.habits, );
+              }),
+        ),
           ],
         ),
       ),

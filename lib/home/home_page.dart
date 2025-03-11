@@ -3,6 +3,8 @@ import 'package:habits_project/db/db.dart';
 import 'package:habits_project/home/added_page.dart';
 import 'package:habits_project/home/edit_goal.dart';
 import 'package:habits_project/home/edit_habit.dart';
+import 'package:habits_project/widgets/your_goals.dart';
+import 'package:habits_project/widgets/your_habits.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -114,26 +116,30 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
-                          Column(
-                            children: [
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Text(
-                                "3 of 5 habits",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white),
-                              ),
-                              Text(
-                                "completed today!",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white),
-                              ),
-                            ],
+                          SizedBox(width: 10,),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Text(
+                                  "3 of 5 habits",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white),
+                                ),
+                                Text(
+                                  "completed today!",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
                           )
                         ],
                       ),
@@ -180,34 +186,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: habits.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Text(habits[index]['name'] ?? ""),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              checkColor: Color(0xFF37C871),
-                              value: isCheckingMe,
-                              onChanged: (value) {
-                                setState(() {
-                                  isCheckingMe = value!;
-                                });
-                              },
-                            ),
-                            IconButton(
-                                onPressed: () {}, icon: Icon(Icons.more_vert))
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                YourHabits(habits: habits),
                 SizedBox(
                   height: 20,
                 ),
@@ -224,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                     TextButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (
-                            context) => EditGoal()));
+                            context) => EditGoal(goals: goals)));
                       },
                       child: Text(
                         "See all",
@@ -237,19 +216,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: goals.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Text(goals[index]['name'] ?? ""),
-                      subtitle: Text(goals[index]['habitType'] ?? ""),
-                      trailing: IconButton(
-                          onPressed: () {}, icon: Icon(Icons.more_vert)),
-                    );
-                  },
-                ),
+             YourGoals(goals: goals),
               ],
             ),
           ),
