@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:habits_project/db/db.dart';
+import 'package:habits_project/db/progress/progress_home.dart';
 import 'package:habits_project/home/added_page.dart';
 import 'package:habits_project/home/edit_goal.dart';
 import 'package:habits_project/home/edit_habit.dart';
+import 'package:habits_project/settings/settings_page.dart';
 import 'package:habits_project/widgets/your_goals.dart';
 import 'package:habits_project/widgets/your_habits.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +22,21 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController goalController = TextEditingController();
   final TextEditingController habitController = TextEditingController();
   bool isCheckingMe = false;
+  int _selectedIndex = 0;
+
+
+  final List<Widget> _pages = [
+    Container(),
+    ProgressHome(),
+    SettingsPage(),
+  ];
+
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   void initState() {
@@ -34,7 +51,9 @@ class _HomePageState extends State<HomePage> {
     String formattedDate =
     DateFormat('EEE, MMM d, yyyy', 'en_US').format(today);
     return Scaffold(
-      body: SingleChildScrollView(
+
+      body: _selectedIndex == 0
+          ?  SingleChildScrollView(
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(20),
@@ -221,7 +240,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-      ),
+      )
+          : _pages[_selectedIndex],
+
+
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green.shade300,
         shape: CircleBorder(),
@@ -230,7 +253,11 @@ class _HomePageState extends State<HomePage> {
           _showAddHabitDialog(context);
         },
       ),
-      bottomNavigationBar: BottomNavBar(),
+
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
+      ),
     );
   }
 
@@ -424,7 +451,7 @@ class _HomePageState extends State<HomePage> {
                       };
                       Db.habits.add(habit);
 
-                      final Map<String, dynamic> goals = {
+                      final Map<String, dynamic> goal = {
                         'id': Db.goals.length + 1,
                         'userId': 1,
                         'name': goalController.text,
@@ -432,7 +459,7 @@ class _HomePageState extends State<HomePage> {
                         'target': 7,
                         'habitType': habitdropDownValue,
                       };
-                      Db.goals.add(habit);
+                      Db.goals.add(goal);
 
                       Navigator.push(
                         context,
@@ -468,7 +495,14 @@ class _HomePageState extends State<HomePage> {
 }
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({super.key});
+  final int currentIndex;
+  final Function(int) onItemTapped;
+
+  const BottomNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onItemTapped,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -477,6 +511,8 @@ class BottomNavBar extends StatelessWidget {
       unselectedItemColor: Colors.grey,
       showUnselectedLabels: false,
       showSelectedLabels: false,
+      currentIndex: currentIndex,
+      onTap: onItemTapped,
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.monitor_heart), label: ""),
@@ -485,3 +521,4 @@ class BottomNavBar extends StatelessWidget {
     );
   }
 }
+

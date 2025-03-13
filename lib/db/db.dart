@@ -13,8 +13,24 @@
       'id': 1,
       'userId': 1,
       'name': 'Finish 5 Philosophy Books',
-      'progress': 5, // Number of days completed
-      'target': 7,   // Total target days
+      'progress': 5,
+      'target': 7,
+      'habitType': 'Everyday',
+    },
+    {
+      'id': 2,
+      'userId': 1,
+      'name': 'Read 8 Books',
+      'progress': 5,
+      'target': 7,
+      'habitType': 'Everyday',
+    },
+    {
+      'id': 3,
+      'userId': 1,
+      'name': 'Read 10 Books',
+      'progress': 5,
+      'target': 7,
       'habitType': 'Everyday',
     },
   ];
@@ -23,8 +39,20 @@
     {
       'id': 1,
       'userId': 1,
-      'name': '',
+      'name': 'Reading',
       'completed':true,
     },
+   {
+     'id': 1,
+     'userId': 1,
+     'name': 'Listening',
+     'completed':true,
+   },
+   {
+     'id': 1,
+     'userId': 1,
+     'name': 'Writing',
+     'completed':true,
+   },
   ];
 }

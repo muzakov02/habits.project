@@ -1,21 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:habits_project/Authetincation/log_in.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:habits_project/authetincation/log_in.dart';
+import 'package:habits_project/authetincation/otp_code_page.dart';
 import 'package:habits_project/home/home_page.dart';
-
+import 'package:habits_project/repos/sign_up_repo.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
+
+  static Future<SignUpPage?> fromJson(Map<String, dynamic> body) async {}
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final SignUpRepo signUpRepo = SignUpRepo();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  void _registerUser() async {
+    try {
+      String email = emailController.text.trim();
+      String password = passwordController.text.trim();
+      String confirmPassword = confirmPasswordController.text.trim();
+
+      if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("❌ Barcha maydonlarni to‘ldiring!")),
+        );
+        return;
+      }
+
+      if (password != confirmPassword) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("❌ Parollar mos kelmadi!")),
+        );
+        return;
+      }
+
+      bool isRegistered = await signUpRepo.fetchSignUp(email, password);
+
+      if (isRegistered) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("✅ Ro‘yxatdan o‘tish muvaffaqiyatli!")),
+        );
+        if (!mounted) return; // Xatolikdan qochish
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => OtpCodePage()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("❌ Bu email allaqachon ro‘yxatdan o‘tgan!")),
+        );
+      }
+    } catch (e) {
+      print("❌ Xatolik: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("❌ Ro‘yxatdan o‘tishda xatolik: $e")),
+      );
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(32),
           child: Column(
@@ -34,8 +89,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Row(
                     children: [
                       TextButton(
-                        onPressed: (
-                            ) {
+                        onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => LogIn()),
@@ -51,9 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                       IconButton(
-                        onPressed: (
-                            ) {
-                        },
+                        onPressed: () {},
                         icon: Icon(
                           Icons.arrow_forward,
                           color: Color(0XFFFF5C00),
@@ -63,72 +115,51 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 30),
               Text('Name'),
               TextFormField(
-                onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                controller: nameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               Text('Email'),
               TextFormField(
-                onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                controller: emailController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               Text('Password '),
               TextFormField(
-                onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                controller: passwordController,
+                obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               Text('Password confirmation'),
               TextFormField(
-                onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                controller: confirmPasswordController,
+                obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 40,
-              ),
+              SizedBox(height: 40),
               InkWell(
-                onTap: (){
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
-                },
+                onTap: _registerUser,
                 child: Container(
                   height: 49,
                   width: 298,
@@ -147,9 +178,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 40,
-              ),
+              SizedBox(height: 40),
               Center(
                 child: Text(
                   'Or sign up with:',
@@ -160,9 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 40,
-              ),
+              SizedBox(height: 40),
               Container(
                 height: 49,
                 width: 298,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:habits_project/authetincation/sign_up_page.dart';
 import 'package:habits_project/provider/habit_provider.dart';
 
-import 'package:habits_project/providers/habit_provider.dart';
 import 'package:habits_project/home/home_page.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Habits App',
       theme: ThemeData(
       ),
-      home: const HomePage(),
+      home: const SignUpPage(),
     );
   }
 }

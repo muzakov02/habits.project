@@ -31,40 +31,38 @@ class _EditHabitState extends State<EditHabit> {
           style: TextStyle(fontSize: 21, fontWeight: FontWeight.w700),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          children: [
-          SizedBox(
-          height: 66,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: next7Days.length,
-            reverse: false,
-            itemBuilder: (context, index) {
-              DateTime date = next7Days[index];
-
-              bool isToday = DateFormat('yyyy-MM-dd').format(date) ==
-                  DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-              return _buildDateItem(date, isToday);
-            },
-          ),
-        ),
+      body: Column(
+        children: [
         SizedBox(
-          height: 20,
+        height: 66,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: next7Days.length,
+          reverse: false,
+          itemBuilder: (context, index) {
+            DateTime date = next7Days[index];
+
+            bool isToday = DateFormat('yyyy-MM-dd').format(date) ==
+                DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+            return _buildDateItem(date, isToday);
+          },
         ),
-        Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: ListView.builder(
+      ),
+      SizedBox(
+        height: 20,
+      ),
+
+         Expanded(
+           child: ListView.builder(
               padding: EdgeInsets.all(16.0),
               itemCount: widget.habits.length,
               itemBuilder: (context, index) {
                 return YourHabits(habits: widget.habits, );
               }),
-        ),
-          ],
-        ),
+         ),
+
+        ],
       ),
     );
   }
