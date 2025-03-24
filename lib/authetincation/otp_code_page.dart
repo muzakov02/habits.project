@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:habits_project/authetincation/log_in.dart';
+import 'package:habits_project/widgets/otp_input_box.dart';
 
 class OtpCodePage extends StatefulWidget {
   const OtpCodePage({super.key});
@@ -9,123 +10,63 @@ class OtpCodePage extends StatefulWidget {
 }
 
 class _OtpCodePageState extends State<OtpCodePage> {
+  final List<TextEditingController> controllers =
+      List.generate(5, (index) => TextEditingController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Text(
-                "Enter OTP code we’ve sent to your email",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey.shade500),
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            SizedBox(height: 100),
+            Text(
+              "Enter OTP code we’ve sent to your email",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade500,
               ),
+            ),
+            SizedBox(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: controllers
+                  .map((controller) => OtpInputBox(controller: controller))
+                  .toList(),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            InkWell(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LogIn()),
+                );
+              },
+              child: Container(
+                height: 49,
+                width: 298,
+                decoration: BoxDecoration(
+                  color: Color(0XFFFF5C00),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Center(
+                  child: Text(
+                    "Submit",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ],
 
-        SizedBox(
-        height: 32,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 68,
-            width: 64,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.cyan),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: TextFormField(
-              onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
-                }
-              },
-              onSaved: (pin1) {},
-              style: Theme.of(context).textTheme.headlineLarge,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(1),
-                FilteringTextInputFormatter.digitsOnly
-              ],
-            ),
-          ),
-          Container(
-            height: 68,
-            width: 64,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.cyan),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: TextFormField(
-              onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
-                }
-              },
-              onSaved: (pin1) {},
-              style: Theme.of(context).textTheme.headlineLarge,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(1),
-                FilteringTextInputFormatter.digitsOnly
-              ],
-            ),
-          ),
-          Container(
-            height: 68,
-            width: 64,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.cyan),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: TextFormField(
-              onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
-                }
-              },
-              onSaved: (pin1) {},
-              style: Theme.of(context).textTheme.headlineLarge,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(1),
-                FilteringTextInputFormatter.digitsOnly
-              ],
-            ),
-          ),
-          Container(
-            height: 68,
-            width: 64,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.cyan),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: TextFormField(
-              onChanged: (value) {
-                if (value.length == 1) {
-                  FocusScope.of(context).nextFocus();
-                }
-              },
-              onSaved: (pin1) {},
-              style: Theme.of(context).textTheme.headlineLarge,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(1),
-                FilteringTextInputFormatter.digitsOnly
-              ],
-            ),
-          ),
-        ],
-      ),
-            ],
-          ),
+        ),
       ),
     );
   }
