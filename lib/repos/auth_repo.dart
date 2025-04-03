@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:habits_project/core/constans/api.dart';
 import 'package:http/http.dart' as http;
 
+
 class AuthRepo {
   Future<void> signUp({required String email, required String password}) async {
     try {
