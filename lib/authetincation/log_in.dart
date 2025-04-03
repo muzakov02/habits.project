@@ -25,7 +25,7 @@ class _LogInState extends State<LogIn> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Sign Up",
+                  "Log In",
                   style: TextStyle(
                       fontSize: 44,
                       fontWeight: FontWeight.w700,
@@ -33,26 +33,21 @@ class _LogInState extends State<LogIn> {
                 ),
                 Row(
                   children: [
-                    TextButton(
-                      onPressed: (
-                          ) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignUpPage()),
-                        );
-                      },
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0XFFFF5C00),
-                        ),
+                    Text(
+                      "Sign Up",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0XFFFF5C00),
                       ),
                     ),
                     IconButton(
                       onPressed: (
                           ) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignUpPage()),
+                        );
                       },
                       icon: Icon(
                         Icons.arrow_forward,
@@ -126,7 +121,7 @@ class _LogInState extends State<LogIn> {
               },
               child: Container(
                 height: 49,
-                width: 298,
+
                 decoration: BoxDecoration(
                   color: Color(0XFFFF5C00),
                   borderRadius: BorderRadius.circular(10),
@@ -160,7 +155,7 @@ class _LogInState extends State<LogIn> {
             ),
             Container(
               height: 49,
-              width: 298,
+
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),

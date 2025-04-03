@@ -3,7 +3,7 @@ import 'package:habits_project/authetincation/log_in.dart';
 import 'package:habits_project/widgets/otp_input_box.dart';
 
 class OtpCodePage extends StatefulWidget {
-  const OtpCodePage({super.key});
+  const OtpCodePage({super.key, required String email, required String password});
 
   @override
   State<OtpCodePage> createState() => _OtpCodePageState();

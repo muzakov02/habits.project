@@ -1,17 +1,20 @@
 import 'dart:convert';
+
 import 'package:habits_project/core/constans/api.dart';
 import 'package:http/http.dart' as http;
 
-class AuthRepo {
-  Future<void> signUp({required String email, required String password}) async {
+class VerifyOtpRepo {
+  Future<void> verifyOtp(
+      {required String email,
+        required String otp}) async {
     try {
       final response = await http.post(
-        Uri.parse('${Api.baseUrl}${Api.signUp}'),
+        Uri.parse('${Api.baseUrl}${Api.verifyOtp}'),
         headers: {
           'accept': '*/*',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode({"email": email, "password": password}),
+        body: jsonEncode({"email": email, "otp": otp}),
       );
 
       final data = jsonDecode(response.body);

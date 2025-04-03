@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:habits_project/authetincation/otp_code_page.dart';
 import 'package:habits_project/authetincation/sign_up_page.dart';
 import 'package:habits_project/provider/habit_provider.dart';
-
-import 'package:habits_project/home/home_page.dart';
+import 'package:habits_project/provider/sign_up_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -23,12 +21,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Habits App',
-      theme: ThemeData(
+      theme: ThemeData(),
+      home: ChangeNotifierProvider(
+        create: (context) => SignUpProvider(),
+        child: const SignUpPage(),
       ),
-      home: const OtpCodePage(),
     );
   }
 }
-
-
-
