@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:habits_project/models/goal.dart';
 import 'package:habits_project/widgets/delete_goal_dialog.dart';
 import 'package:habits_project/widgets/edit_goal_dialog.dart';
 
 class YourGoals extends StatefulWidget {
   const YourGoals({super.key, required this.goals});
 
-  final List<Map<String, dynamic>> goals;
+  final List<Goal> goals;
 
 
   @override
@@ -25,7 +26,7 @@ class _YourGoalsState extends State<YourGoals> {
       itemCount: widget.goals.length,
       itemBuilder: (context, index) {
         return ListTile(
-            title: Text(widget.goals[index]['name'] ?? ""),
+            title: Text(widget.goals[index].title ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -35,20 +36,20 @@ class _YourGoalsState extends State<YourGoals> {
                 //   backgroundColor: Colors.grey.shade300,
                 //   valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
                 // ),
-                Text(widget.goals[index]['habitType'] ?? ""),
+                Text(widget.goals[index].description),
               ],
             ),
             trailing: PopupMenuButton(
                 icon: Icon(Icons.more_vert),
                 onSelected: (value) async {
                   if (value == "Edit") {
-                    goalController.text = widget.goals[index]['name'];
-                    habitController.text = widget.goals[index]['habitType'];
+                    goalController.text = widget.goals[index].title;
+                    habitController.text = widget.goals[index].description;
                     EditGoalDialog().showEditGoalDialog(
                         context, goalController, habitController);
                   } else {
                     bool isDeleted = await DeleteGoalDialog()
-                        .showDeleteGoalDialog(context, widget.goals[index]['id']);
+                        .showDeleteGoalDialog(context, widget.goals[index].id);
                     if (isDeleted) {
                       setState(() {
                         widget.goals.removeAt(index);

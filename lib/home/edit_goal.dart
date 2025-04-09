@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:habits_project/models/goal.dart';
 import 'package:habits_project/widgets/your_goals.dart';
 class EditGoal extends StatefulWidget {
   const EditGoal({super.key, required this.goals});
-  final List<Map<String, dynamic>> goals;
+  final List<Goal> goals;
 
   @override
   State<EditGoal> createState() => _EditGoalState();
@@ -11,6 +12,8 @@ class EditGoal extends StatefulWidget {
 class _EditGoalState extends State<EditGoal> {
   @override
   Widget build(BuildContext context) {
+    print(widget.goals.first.id);
+    // asdfasdf/goals/widget.goals.first.id
     return Scaffold(
       appBar: AppBar(
         title: Text(

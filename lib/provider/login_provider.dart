@@ -1,21 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:habits_project/repos/auth/auth_repo.dart';
+import 'package:habits_project/repos/auth/login_repo.dart';
 
-class SignUpProvider extends ChangeNotifier {
+class LoginProvider extends ChangeNotifier {
   bool isLoading = false;
   String? error;
 
-  Future<void> signUp({required String email, required String password}) async {
+  Future<void> login({required String email, required String password}) async {
     isLoading = true;
     error = null;
     notifyListeners();
     print("Provider ishladi");
     try {
       print('try');
-      await AuthRepo().signUp(email: email, password: password);
+      await LoginRepo().LogIn(email: email, password: password);
     } catch (e) {
       print('catch: $e');
-      error = "❌ Ro‘yxatdan o‘tishda xatolik: ${e.toString()}";
+      error = "❌ Loginda xatolik: ${e.toString()}";
     }
     isLoading = false;
     notifyListeners();

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habits_project/home/home_page.dart';
+import 'package:habits_project/provider/goals_provider.dart';
+import 'package:provider/provider.dart';
 
 class AddedPage extends StatelessWidget {
   const AddedPage({super.key});
@@ -52,7 +54,11 @@ class AddedPage extends StatelessWidget {
               onTap: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider(
+                        create: (context) => GoalsProvider(),
+                        child: HomePage()),
+                  ),
                 );
               },
               child: Container(

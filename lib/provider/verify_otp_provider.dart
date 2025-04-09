@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:habits_project/repos/verify_otp_repo.dart';
+import 'package:habits_project/repos/auth/verify_otp_repo.dart';
 
 class VerifyOtpProvider extends ChangeNotifier {
   bool isLoading = false;

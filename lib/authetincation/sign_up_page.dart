@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:habits_project/authetincation/log_in.dart';
 import 'package:habits_project/authetincation/otp_code_page.dart';
 import 'package:habits_project/provider/sign_up_provider.dart';
+import 'package:habits_project/provider/verify_otp_provider.dart';
 import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +50,15 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       IconButton(
                         onPressed: () {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => LogIn()));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LogIn(),
+                            ),
+                          );
                         },
                         icon:
-                        Icon(Icons.arrow_forward, color: Color(0XFFFF5C00)),
+                            Icon(Icons.arrow_forward, color: Color(0XFFFF5C00)),
                       ),
                     ],
                   ),
@@ -81,29 +86,31 @@ class _SignUpPageState extends State<SignUpPage> {
                   decoration: _inputDecoration()),
               SizedBox(height: 40),
               Consumer<SignUpProvider>(builder: (context, provider, _) {
-
                 return InkWell(
                   onTap: provider.isLoading
                       ? null
                       : () async {
-                    await provider.signUp(
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim(),
-                    );
+                          await provider.signUp(
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
+                          );
 
-                    if (provider.error == null) {
-                      print("ERROR: null");
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OtpCodePage(
-                              email: emailController.text.trim(),
-                              password:
-                              passwordController.text.trim(),
-                            )),
-                      );
-                    }
-                  },
+                          if (provider.error == null) {
+                            print("ERROR: null");
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChangeNotifierProvider(
+                                  create: (context) => VerifyOtpProvider(),
+                                  child: OtpCodePage(
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        },
                   child: Container(
                     height: 49,
                     decoration: BoxDecoration(
@@ -113,12 +120,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: provider.isLoading
                           ? CircularProgressIndicator()
                           : Text(
-                        "Sign Up",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                            color: Colors.white),
-                      ),
+                              "Sign Up",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  color: Colors.white),
+                            ),
                     ),
                   ),
                 );
