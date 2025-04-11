@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:habits_project/provider/habit_provider.dart';
-
-import 'package:habits_project/providers/habit_provider.dart';
-import 'package:habits_project/home/home_page.dart';
+import 'package:habits_project/provider/goals_provider.dart';
+import 'package:habits_project/provider/habits_provider.dart';
+import 'package:habits_project/provider/login_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'home/home_page.dart';
 
 void main() {
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => HabitProvider()),
-      ],
-      child: MyApp(),
-    ),
+    MyApp(),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Habits App',
-      theme: ThemeData(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => LoginProvider()),
+        ChangeNotifierProvider(create: (context) => GoalsProvider()),
+        ChangeNotifierProvider(create: (context) => HabitsProvider()),
+      ],
+      child: MaterialApp(
+        title: '',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: HomePage(),
+        debugShowCheckedModeBanner: false,
       ),
-      home: const HomePage(),
     );
   }
 }
-
-
-
