@@ -30,23 +30,25 @@ class HabitsProvider extends ChangeNotifier {
     return null;
   }
 
-  Future<String?> createNewHabit(String title,
-      String frequency,
-      String createdAt) async {
+  Future<String?> createNewHabit(String title, String frequency, String createdAt, int goalId) async {
     isLoading = true;
     error = null;
     notifyListeners();
     try {
-      await CreateNewHabitRepo().createNewHabit(title, frequency, createdAt);
-      print("succes");
+      await CreateNewHabitRepo().createNewHabit(title, frequency, createdAt, goalId);
+      print("habit created");
+      isLoading = false;
+      notifyListeners();
       return null;
-    }
-    catch (e) {
+    } catch (e) {
       error = "❌ Ma'lumot olishda xatolik: ${e.toString()}";
       print("error");
+      isLoading = false;
+      notifyListeners();
       return error;
     }
   }
+
 
   void clearError() {
     error = null;

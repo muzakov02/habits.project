@@ -31,6 +31,7 @@ class GoalsProvider extends ChangeNotifier {
       String title,
       String description,
       String endDate) async {
+
     isLoading = true;
     error = null;
     notifyListeners();

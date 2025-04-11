@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateNewGoalRepo {
-  Future<void> createNewGoal(
-      String title, String description, String endDate) async {
+  Future<int> createNewGoal(String title, String description, String endDate) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final String? token = prefs.getString('token');
@@ -29,9 +28,15 @@ class CreateNewGoalRepo {
           print("❌ Xatolik:  ");
           throw Exception("Server xatosi:");
         }
-        final data = jsonDecode(response.body);
 
-        print("✅  muvaffaqiyatli: ${jsonEncode(data)}");
+        final data = jsonDecode(response.body);
+        print("✅ muvaffaqiyatli: ${jsonEncode(data)}");
+
+        if (data["goal_id"] != null) {
+          return data["goal_id"];
+        } else {
+          throw Exception("goal_id topilmadi");
+        }
       } else {
         throw Exception("Token topilmadi");
       }
@@ -41,3 +46,4 @@ class CreateNewGoalRepo {
     }
   }
 }
+

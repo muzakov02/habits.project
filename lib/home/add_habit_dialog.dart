@@ -4,7 +4,6 @@ import 'package:habits_project/provider/goals_provider.dart';
 import 'package:habits_project/provider/habits_provider.dart';
 import 'package:provider/provider.dart';
 
-
 class AddHabitDialog {
   void showAddHabitDialog(
       BuildContext context,
@@ -25,6 +24,7 @@ class AddHabitDialog {
         'text': "1 day",
       },
     ];
+
     String dropDownValue = 'month';
 
     List<Map<String, String>> names = [
@@ -38,10 +38,12 @@ class AddHabitDialog {
       },
       {
         'value': 'day',
-        'text': " Everyday",
+        'text': "Everyday",
       },
     ];
+
     String habitdropDownValue = 'month';
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -71,9 +73,7 @@ class AddHabitDialog {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   Text(
                     "Your Goal",
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
@@ -83,15 +83,11 @@ class AddHabitDialog {
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   Text(
                     "Habit Name",
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
@@ -101,20 +97,16 @@ class AddHabitDialog {
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Pariod',
+                        'Period',
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w600),
                       ),
@@ -125,18 +117,15 @@ class AddHabitDialog {
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: DropdownButton(
-                          padding: EdgeInsets.zero,
                           value: dropDownValue,
                           underline: SizedBox(),
                           borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                          items: items.map(
-                                (item) {
-                              return DropdownMenuItem(
-                                value: item['value'],
-                                child: Text(item['text'].toString()),
-                              );
-                            },
-                          ).toList(),
+                          items: items.map((item) {
+                            return DropdownMenuItem(
+                              value: item['value'],
+                              child: Text(item['text'].toString()),
+                            );
+                          }).toList(),
                           onChanged: (value) {
                             setState(() {
                               dropDownValue = value.toString();
@@ -146,9 +135,7 @@ class AddHabitDialog {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -166,17 +153,13 @@ class AddHabitDialog {
                         child: DropdownButton(
                           value: habitdropDownValue,
                           underline: SizedBox(),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(16.0),
-                          ),
-                          items: names.map(
-                                (item) {
-                              return DropdownMenuItem(
-                                value: item['value'],
-                                child: Text(item['text'].toString()),
-                              );
-                            },
-                          ).toList(),
+                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                          items: names.map((item) {
+                            return DropdownMenuItem(
+                              value: item['value'],
+                              child: Text(item['text'].toString()),
+                            );
+                          }).toList(),
                           onChanged: (value) {
                             setState(() {
                               habitdropDownValue = value.toString();
@@ -186,63 +169,59 @@ class AddHabitDialog {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   InkWell(
-                    onTap: () {
-                      context
-                          .read<GoalsProvider>()
-                          .createNewGoal(
+                    onTap: () async {
+                      final goalId = await context.read<GoalsProvider>().createNewGoal(
                         goalController.text,
                         "Test Description",
                         DateTime.now().toString().split(' ').first,
                       );
-                      context
-                          .read<HabitsProvider>()
-                          .createNewHabit(
-                      habitController.text,
-                      "Test Description",
-                      DateTime.now().toString().split(' ').first,
-                      )
-                          .then(
-                            (error) {
-                          if (error != null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(error),
-                              ),
-                            );
-                          } else {
-                            Navigator.pop(context);
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddedPage(),
-                              ),
-                            );
-                          }
-                        },
-                      );
+
+                      context.read<HabitsProvider>().createNewHabit(
+                        habitController.text,
+                        "Test Description",
+                        DateTime.now().toString().split(' ').first,
+                        goalId,
+                      ).then((error) {
+                        if (error != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error)),
+                          );
+                        } else {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => AddedPage()),
+                          );
+                        }
+                      });
                     },
-                    child: Container(
-                      height: 49,
-                      width: 298,
-                      decoration: BoxDecoration(
-                        color: Color(0XFFFF5C00),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: (goalsProvider.isLoading || habitsProvider.isLoading)
-                            ? CircularProgressIndicator.adaptive()
-                            : Text(
-                          "Create New",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 14,
-                              color: Colors.white),
-                        ),
-                      ),
+                    child: Builder(
+                      builder: (context) {
+                        final goalsProvider = context.watch<GoalsProvider>();
+                        final habitsProvider = context.watch<HabitsProvider>();
+
+                        return Container(
+                          height: 49,
+                          width: 298,
+                          decoration: BoxDecoration(
+                            color: Color(0XFFFF5C00),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: (goalsProvider.isLoading || habitsProvider.isLoading)
+                                ? CircularProgressIndicator.adaptive()
+                                : Text(
+                              "Create New",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 14,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
