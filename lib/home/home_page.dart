@@ -8,7 +8,6 @@ import 'package:habits_project/provider/habits_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -27,13 +26,14 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getGoals();
+    getHabits();
   }
 
   void getGoals() async {
     WidgetsBinding.instance.addPostFrameCallback(
-          (_) {
+      (_) {
         Provider.of<GoalsProvider>(context, listen: false).getGoals().then(
-              (value) {
+          (value) {
             if (value != null) {
               goals = value;
               setState(() {});
@@ -49,11 +49,12 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
   void getHabits() async {
     WidgetsBinding.instance.addPostFrameCallback(
-          (_) {
+      (_) {
         Provider.of<HabitsProvider>(context, listen: false).getHabits().then(
-              (value) {
+          (value) {
             if (value != null) {
               habits = value;
               setState(() {});
@@ -74,7 +75,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     DateTime today = DateTime.now();
     String formattedDate =
-    DateFormat('EEE, MMM d, yyyy', 'en_US').format(today);
+        DateFormat('EEE, MMM d, yyyy', 'en_US').format(today);
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -95,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       "Hello,",
                       style:
-                      TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
                     ),
                     Text(
                       "Suys!",

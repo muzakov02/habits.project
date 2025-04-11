@@ -27,22 +27,20 @@ class GoalsProvider extends ChangeNotifier {
     return null;
   }
 
-  Future<String?> createNewGoal(
-      String title,
-      String description,
-      String endDate) async {
-
+  Future<Map<String, dynamic>> createNewGoal(
+      String title, String description, String endDate) async {
     isLoading = true;
     error = null;
     notifyListeners();
     try {
-      await CreateNewGoalRepo().createNewGoal(title, description, endDate);
+      int goalId =
+          await CreateNewGoalRepo().createNewGoal(title, description, endDate);
       print("succes");
-      return null;
+      return {'result': goalId};
     } catch (e) {
       error = "❌ Ma'lumot olishda xatolik: ${e.toString()}";
       print("error");
-      return error;
+      return {'error': error};
     }
   }
 

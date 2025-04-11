@@ -6,50 +6,50 @@ import 'package:provider/provider.dart';
 
 class AddHabitDialog {
   void showAddHabitDialog(
-      BuildContext context,
-      TextEditingController goalController,
-      TextEditingController habitController,
-      ) {
+    BuildContext context,
+    TextEditingController goalController,
+    TextEditingController habitController,
+  ) {
     List<Map<String, String>> items = [
       {
-        'value': 'month',
+        'value': 'monthly',
         'text': "1 month(30 days)",
       },
       {
-        'value': 'week',
+        'value': 'weekly',
         'text': "1 week (7 days)",
       },
       {
-        'value': 'day',
+        'value': 'daily',
         'text': "1 day",
       },
     ];
 
-    String dropDownValue = 'month';
+    String dropDownValue = 'monthly';
 
     List<Map<String, String>> names = [
       {
-        'value': 'month',
-        'text': "Everymonth",
+        'value': 'monthly',
+        'text': "Every month",
       },
       {
-        'value': 'week',
-        'text': "Everyweek",
+        'value': 'weekly',
+        'text': "Every week",
       },
       {
-        'value': 'day',
+        'value': 'daily',
         'text': "Everyday",
       },
     ];
 
-    String habitdropDownValue = 'month';
+    String habitdropDownValue = 'monthly';
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           contentPadding: EdgeInsets.all(16),
           content: StatefulBuilder(
             builder: (context, setState) {
@@ -172,30 +172,38 @@ class AddHabitDialog {
                   SizedBox(height: 20),
                   InkWell(
                     onTap: () async {
-                      final goalId = await context.read<GoalsProvider>().createNewGoal(
-                        goalController.text,
-                        "Test Description",
-                        DateTime.now().toString().split(' ').first,
-                      );
-
-                      context.read<HabitsProvider>().createNewHabit(
-                        habitController.text,
-                        "Test Description",
-                        DateTime.now().toString().split(' ').first,
-                        goalId,
-                      ).then((error) {
-                        if (error != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error)),
-                          );
-                        } else {
-                          Navigator.pop(context);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => AddedPage()),
-                          );
-                        }
-                      });
+                      final result =
+                          await context.read<GoalsProvider>().createNewGoal(
+                                goalController.text,
+                                "Test Description",
+                                DateTime.now().toString().split(' ').first,
+                              );
+                      if (result['error'] != null) {
+                        print('ERROR');
+                      } else {
+                        context
+                            .read<HabitsProvider>()
+                            .createNewHabit(
+                              habitController.text,
+                              dropDownValue,
+                              DateTime.now().toString().split(' ').first,
+                              14,
+                            )
+                            .then((error) {
+                          if (error != null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(error)),
+                            );
+                          } else {
+                            Navigator.pop(context);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddedPage()),
+                            );
+                          }
+                        });
+                      }
                     },
                     child: Builder(
                       builder: (context) {
@@ -210,15 +218,16 @@ class AddHabitDialog {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
-                            child: (goalsProvider.isLoading || habitsProvider.isLoading)
+                            child: (goalsProvider.isLoading ||
+                                    habitsProvider.isLoading)
                                 ? CircularProgressIndicator.adaptive()
                                 : Text(
-                              "Create New",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 14,
-                                  color: Colors.white),
-                            ),
+                                    "Create New",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 14,
+                                        color: Colors.white),
+                                  ),
                           ),
                         );
                       },

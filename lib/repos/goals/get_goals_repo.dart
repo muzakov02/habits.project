@@ -30,7 +30,6 @@ class GetGoalsRepo {
         List<Goal> goals =
             goalsJson.map((goal) => Goal.fromJson(goal)).toList();
 
-        print("✅  muvaffaqiyatli: ${jsonEncode(data)}");
         return goals;
       } else {
         throw Exception("Token topilmadi");

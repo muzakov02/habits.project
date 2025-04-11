@@ -25,13 +25,13 @@ class CreateNewHabitRepo {
             "goal_id": goalId,
           }),
         );
+        final data = jsonDecode(response.body);
 
         if (response.statusCode < 200 || response.statusCode > 300) {
           print("❌ Xatolik:  ");
-          throw Exception("Server xatosi:");
+          throw Exception("Server xatosi: ${data}");
         }
 
-        final data = jsonDecode(response.body);
         print("✅ muvaffaqiyatli: ${jsonEncode(data)}");
       } else {
         throw Exception("Token topilmadi");
@@ -42,4 +42,3 @@ class CreateNewHabitRepo {
     }
   }
 }
-

@@ -7,12 +7,10 @@ class HabitsProvider extends ChangeNotifier {
   bool isLoading = false;
   String? error;
 
-
   Future<List<Habit>?> getHabits() async {
     isLoading = true;
     error = null;
     notifyListeners();
-
 
     try {
       final List<Habit> habits = await GetHabitsRepo().getHabits();
@@ -30,12 +28,14 @@ class HabitsProvider extends ChangeNotifier {
     return null;
   }
 
-  Future<String?> createNewHabit(String title, String frequency, String createdAt, int goalId) async {
+  Future<String?> createNewHabit(
+      String title, String frequency, String createdAt, int goalId) async {
     isLoading = true;
     error = null;
     notifyListeners();
     try {
-      await CreateNewHabitRepo().createNewHabit(title, frequency, createdAt, goalId);
+      await CreateNewHabitRepo()
+          .createNewHabit(title, frequency, createdAt, goalId);
       print("habit created");
       isLoading = false;
       notifyListeners();
@@ -48,7 +48,6 @@ class HabitsProvider extends ChangeNotifier {
       return error;
     }
   }
-
 
   void clearError() {
     error = null;
