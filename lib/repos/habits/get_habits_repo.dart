@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:habits_project/models/goal.dart';
+import 'package:habits_project/models/habit.dart';
 import 'package:http/http.dart' as http;
 import 'package:habits_project/core/constans/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
